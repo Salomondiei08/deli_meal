@@ -1,4 +1,3 @@
-import 'package:deli_meal/models/meal.dart';
 import 'package:deli_meal/providers/meal_provider.dart';
 import 'package:deli_meal/widgets/meal_item.dart';
 import 'package:flutter/material.dart';

@@ -397,12 +397,12 @@ class MealProvider with ChangeNotifier {
       _favoriteMeals.remove(
         _allMeals.firstWhere((meal) => meal.id == id),
       );
-      print('$id has been removed');
+
     } else {
       _favoriteMeals.add(
         _allMeals.firstWhere((meal) => meal.id == id),
       );
-      print('$id has been added');
+
     }
     notifyListeners();
   }
