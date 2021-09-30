@@ -1,5 +1,7 @@
+import 'package:deli_meal/providers/meal_provider.dart';
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
 
 import '/helper/type.dart';
 import '/widgets/main_drawer.dart';
@@ -12,10 +14,23 @@ class FilterPage extends StatefulWidget {
 }
 
 class _FilterPageState extends State<FilterPage> {
-  bool _isGlutenFree = false;
-  bool _isVegan = false;
-  bool _isLactoseFree = false;
-  bool _isVegetarian = false;
+  late bool _isGlutenFree;
+  late bool _isVegan;
+  late bool _isLactoseFree;
+  late bool _isVegetarian;
+ late  MealProvider _filter;
+
+@override
+void didChangeDependencies() {
+  super.didChangeDependencies();
+   _filter = Provider.of<MealProvider>(context);
+
+    _isGlutenFree = _filter.filter['Glutten']!;
+    _isVegan = _filter.filter['Vegan']!;
+    _isLactoseFree = _filter.filter['Lactose']!;
+    _isVegetarian = _filter.filter['Vegetarian']!;
+
+}
 
   Widget _buildSwitchListTile(
       String title, String subtitle, bool currentValue, VoidArg updateValue) {
@@ -54,12 +69,14 @@ class _FilterPageState extends State<FilterPage> {
                     'Gluten Free',
                     'Only displays Glutten-Free Maels',
                     _isGlutenFree, (newValue) {
+                  _filter.setGluttenFilter(isGluttenFree: newValue);
                   setState(() {
                     _isGlutenFree = newValue;
                   });
                 }),
                 _buildSwitchListTile(
                     'Vegan', 'Only displays VeganMaels', _isVegan, (newValue) {
+                      _filter.setVeganFilter(isVegan: newValue);
                   setState(() {
                     _isVegan = newValue;
                   });
@@ -68,6 +85,7 @@ class _FilterPageState extends State<FilterPage> {
                     'Lactose Free',
                     'Only displays Lactose-Free Maels',
                     _isLactoseFree, (newValue) {
+                      _filter.setLactosenFilter(isLactoseFree: newValue);
                   setState(() {
                     _isLactoseFree = newValue;
                   });
@@ -75,7 +93,9 @@ class _FilterPageState extends State<FilterPage> {
                 _buildSwitchListTile(
                     'Vegetarian',
                     'Only displays Vegetarian Maels',
+
                     _isVegetarian, (newValue) {
+                      _filter.setVegetarianFilter(isVegetarian: newValue);
                   setState(() {
                     _isVegetarian = newValue;
                   });

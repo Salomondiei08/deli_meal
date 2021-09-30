@@ -40,7 +40,7 @@ class MainDrawer extends StatelessWidget {
           buildListTile(
             'Filters',
             Icons.settings,
-            () => Navigator.pushReplacementNamed(context, route.filterPage),
+            () => Navigator.pushNamed(context, route.filterPage),
           )
         ],
       ),

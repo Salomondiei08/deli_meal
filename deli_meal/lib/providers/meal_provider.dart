@@ -353,10 +353,85 @@ class MealProvider with ChangeNotifier {
     ),
   ];
 
-  List<Meal> get allMeals => [..._mealList];
+  // ignore: prefer_final_fields
+  Map<String, bool> _filters = {
+    'Glutten': false,
+    'Lactose': false,
+    'Vegan': false,
+    'Vegetarian': false,
+  };
+
+  Map<String, bool> get filter => _filters;
+
+  List<Meal> get _allMeals {
+    return _mealList.where((meal) {
+      if (_filters['Glutten']! && !meal.isGlutenFree) {
+        return false;
+      } else if (_filters['Lactose']! && !meal.isLactoseFree) {
+        return false;
+      } else if (_filters['Vegan']! && !meal.isVegan) {
+        return false;
+      } else if (_filters['Vegetarian']! && !meal.isVegetarian) {
+        return false;
+      } else {
+        return true;
+      }
+    }).toList();
+  }
+
+  List<Meal> _favoriteMeals = [];
+
+  List<Meal> getFavoriteMeals() {
+    return _favoriteMeals;
+  }
+
+  bool isFavorite(String id) {
+    if (_favoriteMeals.any((meal) => meal.id == id)) {
+      return true;
+    }
+    return false;
+  }
+
+  void addFavorite(String id) {
+    if (_favoriteMeals.any((meal) => meal.id == id)) {
+      _favoriteMeals.remove(
+        _allMeals.firstWhere((meal) => meal.id == id),
+      );
+      print('$id has been removed');
+    } else {
+      _favoriteMeals.add(
+        _allMeals.firstWhere((meal) => meal.id == id),
+      );
+      print('$id has been added');
+    }
+    notifyListeners();
+  }
 
   List<Meal> getspecificMeals(String id) {
-    return (_mealList.where((element) => element.categories.contains(id)))
-        .toList();
+    return (_allMeals.where(
+      (meal) => meal.categories.contains(id),
+    )).toList();
+  }
+
+  void setGluttenFilter({required bool isGluttenFree}) {
+    _filters['Glutten'] = isGluttenFree;
+
+    notifyListeners();
+  }
+
+  void setLactosenFilter({required bool isLactoseFree}) {
+    _filters['Lactose'] = isLactoseFree;
+
+    notifyListeners();
+  }
+
+  void setVeganFilter({required bool isVegan}) {
+    _filters['Vegan'] = isVegan;
+    notifyListeners();
+  }
+
+  void setVegetarianFilter({required bool isVegetarian}) {
+    _filters['Vegetarian'] = isVegetarian;
+    notifyListeners();
   }
 }
