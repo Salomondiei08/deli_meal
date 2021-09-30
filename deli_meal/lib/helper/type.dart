@@ -1,0 +1,1 @@
+typedef VoidArg = void Function(bool);
